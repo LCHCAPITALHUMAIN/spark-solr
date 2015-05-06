@@ -53,7 +53,34 @@ public class TwitterToSolrStreamProcessor extends SparkApp.StreamProcessor {
             SolrSupport.autoMapToSolrInputDoc("tweet-"+status.getId(), status, null);
           doc.setField("provider_s", "twitter");
           doc.setField("author_s", status.getUser().getScreenName());
-          doc.setField("type_s", status.isRetweet() ? "echo" : "post");
+          doc.setField("contributors_s", status.getContributors());        
+          doc.setField("created_at_s", status.getCreatedAt());
+          //doc.setField("favorite_count_s", status.getFavoriteCount());
+          if (status.getGeoLocation() != null) {
+            doc.setField("geo_location_latitude_s", status.getGeoLocation().getLatitude());
+            doc.setField("geo_location_longitude_s", status.getGeoLocation().getLongitude());
+          }
+          doc.setField("id_s", status.getId());
+          doc.setField("in_reply_to_screen_name_s", status.getInReplyToScreenName());
+          doc.setField("in__reply_to_status_id_s", status.getInReplyToStatusId());
+          //doc.setField("lang_s", status.getLang());
+          if (status.getPlace() != null) {
+            doc.setField("place_country_s", status.getPlace().getCountry());
+            doc.setField("place_country_code_s", status.getPlace().getCountryCode());
+            doc.setField("place_fullt_name_s", status.getPlace().getFullName());
+            doc.setField("place_name_s", status.getPlace().getName());
+            doc.setField("place_type_s", status.getPlace().getPlaceType());
+            doc.setField("place_street_address_s", status.getPlace().getStreetAddress());
+          }
+          doc.setField("retweet_count_s", status.getRetweetCount());
+          doc.setField("source_", status.getSource());
+          //doc.setField("withheld_in_countries_s", status.getWithheldInCountries());
+          doc.setField("is_favorited_s", status.isFavorited());
+          doc.setField("is_possibly_sensitive_s", status.isPossiblySensitive());
+          doc.setField("is_retweet_s", status.isRetweet());
+          //doc.setField("is_retweeted_s", status.isRetweeted());
+          doc.setField("is_retweeted_by_me_s", status.isRetweetedByMe());
+          doc.setField("is_truncated_s", status.isTruncated());
           return doc;
         }
       }
