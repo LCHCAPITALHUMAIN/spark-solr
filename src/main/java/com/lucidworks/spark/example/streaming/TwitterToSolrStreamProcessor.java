@@ -55,6 +55,7 @@ public class TwitterToSolrStreamProcessor extends SparkApp.StreamProcessor {
           doc.setField("author_s", status.getUser().getScreenName());
           doc.setField("contributors_s", status.getContributors());        
           doc.setField("created_at_s", status.getCreatedAt());
+          doc.setField("text_s", status.getText());
           //doc.setField("favorite_count_s", status.getFavoriteCount());
           if (status.getGeoLocation() != null) {
             doc.setField("geo_location_latitude_s", status.getGeoLocation().getLatitude());
