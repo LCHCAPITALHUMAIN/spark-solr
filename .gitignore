@@ -15,3 +15,5 @@ dependency-reduced-pom.xml
 spark-solr.iml
 spark-solr.ipr
 spark-solr.iws
+
+./twitter4j.properties

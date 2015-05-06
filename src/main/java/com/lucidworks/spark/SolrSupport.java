@@ -162,6 +162,7 @@ public class SolrSupport implements Serializable {
           final SolrClient solrServer = getSolrServer(zkHost);
           List<SolrInputDocument> batch = new ArrayList<SolrInputDocument>();
           Date indexedAt = new Date();
+
           while (solrInputDocumentIterator.hasNext()) {
             SolrInputDocument inputDoc = solrInputDocumentIterator.next();
             inputDoc.setField("_indexed_at_tdt", indexedAt);
@@ -169,6 +170,7 @@ public class SolrSupport implements Serializable {
             if (batch.size() >= batchSize)
               sendBatchToSolr(solrServer, collection, batch);
           }
+
           if (!batch.isEmpty())
             sendBatchToSolr(solrServer, collection, batch);
         }
@@ -178,6 +180,7 @@ public class SolrSupport implements Serializable {
 
   public static void sendBatchToSolr(SolrClient solrServer, String collection, Collection<SolrInputDocument> batch) {
     UpdateRequest req = new UpdateRequest();
+    req.setCommitWithin(1000);
     req.setParam("collection", collection);
 
     if (log.isDebugEnabled())
