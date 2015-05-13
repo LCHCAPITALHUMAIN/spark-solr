@@ -1,5 +1,6 @@
 package com.lucidworks.spark.example.streaming;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,6 +20,8 @@ import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 
 import org.apache.spark.streaming.twitter.TwitterUtils;
+
+import twitter4j.HashtagEntity;
 import twitter4j.Status;
 
 /**
@@ -93,6 +96,11 @@ public class TwitterToSolrStreamProcessor extends SparkApp.StreamProcessor {
           //doc.setField("is_retweeted_s", status.isRetweeted());
           doc.setField("is_retweeted_by_me_b", status.isRetweetedByMe());
           doc.setField("is_truncated_b", status.isTruncated());
+          
+          List<String> hashtags = new ArrayList<String>();
+          for (HashtagEntity hashtag : status.getHashtagEntities()) {
+            hashtags.add(hashtag.getText());
+          }
 
           // Some "fake stats" to make it more interesting
           doc.setField("bytes_i", status.getText().length());
